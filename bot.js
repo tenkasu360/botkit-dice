@@ -13,8 +13,8 @@ controller.spawn({
 var Roll = require('roll'),
 roll = new Roll();
 
-controller.hears('.*', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
-  var input = message.match[0];
+controller.hears('roll (.*)', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+  var input = message.match[1];
   var valid = roll.validate(input);
 
   if (!valid) {
