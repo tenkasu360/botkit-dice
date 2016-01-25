@@ -13,15 +13,14 @@ controller.spawn({
 var Roll = require('roll'),
 roll = new Roll();
 
-controller.hears(['([0-9]*)d([0-9]+)'], [
-  'direct_message',
-  'direct_mention',
-  'mention',
-  'ambient'
-], (bot, message) => {
-  var a = message.match[1];
-  if(a < 1) { a = 1; }
-  var b = message.match[2];
-  var Dice = roll.roll(a+'d'+b);
-  bot.reply(message,a+'d'+b +' > ' + Dice.result );
+controller.hears('.*', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+  var input = message.match[0];
+  var valid = roll.validate(input);
+
+  if (!valid) {
+    bot.reply(message, `${input} is not a valid input string for node-roll!`);
+  } else {
+    var dice = roll.roll(input);
+    bot.reply(message, `${input} > ${dice.result}`);
+  }
 });
